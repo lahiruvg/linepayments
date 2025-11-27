@@ -35,7 +35,7 @@ function buildHmacAuthHeader({ apiKey, apiSecret, requestPath, httpMethod, conte
 }
 
 // === API Route ===
-export async function POST(req) {
+export async function POST() {
   try {
     const API_KEY = process.env.PAYPAY_API_KEY;
     const API_SECRET = process.env.PAYPAY_API_SECRET;
