@@ -1,36 +1,62 @@
 "use client";
 
+import { useState } from "react";
+
 export default function CheckoutPage() {
-  const handlePayment = async () => {
-    const res = await fetch("/api/paypay-create-payment", { method: "POST" });
-    const data = await res.json();
+  const [loading, setLoading] = useState(false);
 
-    const redirect = data.data?.url;
+  const payWithPayPay = async () => {
+    setLoading(true);
 
-    if (redirect) {
-      window.location.href = redirect; // 🔥 Redirect to PayPay app
-    } else {
-      alert("Payment failed. Check console.");
-      console.log(data);
+    try {
+      const res = await fetch("/api/paypay-create-payment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          amount: 10,
+          description: "Checkout order payment"
+        })
+      });
+
+      const data = await res.json();
+      console.log("PayPay Response:", data);
+
+      const url = data?.raw?.data?.url;
+
+      if (!url) {
+        alert("PayPay did not return a redirect URL");
+        return;
+      }
+
+      // Automatic redirect to PayPay
+      window.location.href = url;
+
+    } catch (err) {
+      console.error("PayPay error", err);
+      alert("Payment request failed");
     }
+
+    setLoading(false);
   };
 
   return (
-    <div style={{ padding: 30 }}>
-      <h1>PayPay Mobile Checkout</h1>
-      <p>Pay 10 JPY</p>
+    <div style={{ padding: 40 }}>
+      <h1>Checkout Page</h1>
+
       <button
-        onClick={handlePayment}
+        onClick={payWithPayPay}
+        disabled={loading}
         style={{
-          padding: "10px 20px",
-          fontSize: "18px",
-          background: "#ff4040",
-          color: "#fff",
-          border: "none",
-          borderRadius: "8px",
+          padding: "12px 20px",
+          background: "#ff0033",
+          color: "white",
+          borderRadius: 8,
+          cursor: "pointer"
         }}
       >
-        Pay with PayPay
+        {loading ? "Connecting to PayPay…" : "Pay with PayPay"}
       </button>
     </div>
   );
