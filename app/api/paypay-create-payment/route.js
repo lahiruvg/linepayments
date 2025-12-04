@@ -85,7 +85,7 @@ export async function POST(req) {
       codeType: "ORDER_QR",
       orderDescription: description,
       isAuthorization: false,
-      redirectUrl: "http://localhost:3000/payment-result",
+      redirectUrl: "https://linepayments.vercel.app/payment-result",
       redirectType: "WEB_LINK",
       userAgent: "Mozilla/5.0 (Next.js Server)",
       requestedAt: Math.floor(Date.now() / 1000)
