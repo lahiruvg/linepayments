@@ -91,7 +91,7 @@ export async function POST(req) {
       requestedAt: Math.floor(Date.now() / 1000)
     };
 
-    const { authHeader, contentType } = buildHmacAuthHeader({
+    const { authHeader } = buildHmacAuthHeader({
       apiKey: API_KEY,
       apiSecret: API_SECRET,
       method: "POST",
